@@ -22,6 +22,15 @@ We encourage all users to familiarize themselves with US patent https://www.goog
 
 ## Quick Start
 
+To install and run pleioFDR on a small example, constrained to chromosome 21:
+```
+git clone https://github.com/precimed/pleiofdr && cd pleiofdr
+wget http://norment.myftp.org:8080/pleiofdr/pleioFDR_demo_data.tar.gz
+tar -xzvf pleioFDR_demo_data.tar.gz
+matlab -nodisplay -nosplash < runme.m
+```
+
+To install and run pleioFDR using full example:
 ```
 git clone https://github.com/precimed/pleiofdr && cd pleiofdr
 wget http://norment.myftp.org:8080/pleiofdr/ref9545380_1kgPhase3eur_LDr2p1.mat
@@ -30,6 +39,9 @@ wget http://norment.myftp.org:8080/pleiofdr/SSGAC_EDU_2016.mat
 cp config_default.txt config.txt
 matlab -nodisplay -nosplash < runme.m
 ```
+
+For the description of the data, see [here](http://norment.myftp.org:8080/pleiofdr/about.txt).
+For the results, inspect the ``results`` folder.
 
 ## Install pleioFDR
 
