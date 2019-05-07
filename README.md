@@ -1,6 +1,7 @@
 ## Contents
 
 * [Introduction](#introduction)
+* [Quick Start](#quick-start)
 * [Install pleioFDR](#install-pleiofdr)
 * [Data downloads](#data-downloads)
 * [Data preparation](#data-preparation)
@@ -18,6 +19,17 @@ If you use pleioFDR software for your research publication, please cite the foll
 
 The pleioFDR software may not be used for commercial purpose or in medical applications.
 We encourage all users to familiarize themselves with US patent https://www.google.no/patents/US20150356243 "Systems and methods for identifying polymorphisms".
+
+## Quick Start
+
+```
+git clone https://github.com/precimed/pleiofdr && cd pleiofdr
+wget http://norment.myftp.org:8080/pleiofdr/ref9545380_1kgPhase3eur_LDr2p1.mat
+wget http://norment.myftp.org:8080/pleiofdr/CTG_COG_2018.mat
+wget http://norment.myftp.org:8080/pleiofdr/SSGAC_EDU_2016.mat
+cp config_default.txt config.txt
+matlab -nodisplay -nosplash < runme.m
+```
 
 ## Install pleioFDR
 
@@ -39,7 +51,7 @@ Alternatively, you may get the code by cloning git repository from command line:
 Download reference data from [here](http://norment.myftp.org:8080/pleiofdr/). 
 Please read the description in [about.txt](http://norment.myftp.org:8080/pleiofdr/about.txt).
 
-```
+  ```
   wget http://norment.myftp.org:8080/pleiofdr/about.txt
   wget http://norment.myftp.org:8080/pleiofdr/ref9545380_1kgPhase3eur_LDr2p1.mat
   wget http://norment.myftp.org:8080/pleiofdr/CTG_COG_2018.mat
