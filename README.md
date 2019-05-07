@@ -23,32 +23,29 @@ We encourage all users to familiarize themselves with US patent https://www.goog
 
 Prerequisites:
  - matlab (tested with versions >= 2015)
- - python >= 2.7 (but < 3) with numpy, scipy and pandas libraries
  - workstation with at least 16GB of RAM
-
+ 
 The following step by step instruction assumes you are using Linux, however the same can be done in Windows or Mac with minimal modifications.
 
-Download pleioFDR software by going to https://github.com/precimed/pleiofdr in your favorite internet browser, use "Clone or download" button , and "Download zip" do get the latest code. Repeat the same steps for https://github.com/precimed/python_convert 
+Download pleioFDR software by going to https://github.com/precimed/pleiofdr in your favorite internet browser, use "Clone or download" button , and "Download zip" do get the latest code.
   
 Alternatively, you may get the code by cloning git repository from command line:
   ```
-  git clone https://github.com/precimed/python_convert
-  git clone https://github.com/precimed/pleiofdr
-  cd pleiofdr
+  git clone https://github.com/precimed/pleiofdr && cd pleiofdr
   ```
 
 ## Data downloads
 
 Download reference data from [here](http://norment.myftp.org:8080/pleiofdr/). 
-Please read the [about.txt](http://norment.myftp.org:8080/pleiofdr/about.txt).
+Please read the description in [about.txt](http://norment.myftp.org:8080/pleiofdr/about.txt).
 
 ```
-  wget http://norment.myftp.org:8080/pleiofdr/9545380.ref
-  wget http://norment.myftp.org:8080/pleiofdr/CTG_COG_2018.mat
-  wget http://norment.myftp.org:8080/pleiofdr/SSGAC_EDU_2016.mat
   wget http://norment.myftp.org:8080/pleiofdr/about.txt
   wget http://norment.myftp.org:8080/pleiofdr/ref9545380_1kgPhase3eur_LDr2p1.mat
+  wget http://norment.myftp.org:8080/pleiofdr/CTG_COG_2018.mat
+  wget http://norment.myftp.org:8080/pleiofdr/SSGAC_EDU_2016.mat
   wget http://norment.myftp.org:8080/pleiofdr/ref9545380_bfile.tar.gz
+  wget http://norment.myftp.org:8080/pleiofdr/9545380.ref
   ```
 
 Those at NORMENT with access to NIRD can also download these data from ``SUMSTAT/misc/9545380_ref`` and ``SUMSTAT/TMP/mat_9545380``.
@@ -59,13 +56,20 @@ Here we explain how to convert raw summary statistics to pleioFDR format.
 Feel free to skip this step if you would like to try pleioFDR on ``CTG_COG_2018.mat`` and ``SSGAC_EDU_2016.mat``,
 or if you downloaded input data from the internal NORMENT ``SUMSTATS`` inventory.
 
-1. Download educational attainment and subjective well-being summary statistics
+Prerequisites:
+ - python >= 2.7 (but < 3) with numpy, scipy and pandas libraries
+
+Downloads:
+ - Download code from https://github.com/precimed/python_convert, either via web browser, or ``git clone https://github.com/precimed/python_convert``.
+ - Download educational attainment and subjective well-being summary statistics
 from SSGAC consortium to traitfolder:
-    ```
-    wget http://ssgac.org/documents/EduYears_Main.txt.gz -P traitfolder
-    wget http://ssgac.org/documents/SWB_Full.txt.gz -P traitfolder
-    ```
-2. Use sumstats.py script to standartizize downloaded summary statistics (csv)
+   ```
+   wget http://ssgac.org/documents/EduYears_Main.txt.gz -P traitfolder
+   wget http://ssgac.org/documents/SWB_Full.txt.gz -P traitfolder
+   ```
+
+Conversion steps:
+  - Use sumstats.py script to standartizize downloaded summary statistics (csv)
 and prepare input files for cond/conj fdr analysis (mat):
     ```
     python src/converter/sumstats.py csv --auto --sumstats traitfolder/EduYears_Main.txt.gz  --n-val 328917 --out traitfolder/ssgac.edu.csv --force
@@ -73,8 +77,8 @@ and prepare input files for cond/conj fdr analysis (mat):
     python src/converter/sumstats.py mat --sumstats traitfolder/ssgac.edu.csv --ref 9545380.ref --out traitfolder/ssgac.edu.mat
     python src/converter/sumstats.py mat --sumstats traitfolder/ssgac.swb.csv --ref 9545380.ref --out traitfolder/ssgac.swb.mat
     ```
-   In the first and second commands --n-val argument indicates sample size. The number is taken from original papers [Okbay et al. (2016)].
-    For more details on input arguments please check:
+    In the first and second commands --n-val argument indicates sample size. The number is taken from original papers [Okbay et al. (2016)].
+  - For more details on input arguments please check:
     ```
     python src/converter/sumstats.py --help
     python src/converter/sumstats.py csv --help
@@ -101,8 +105,9 @@ and prepare input files for cond/conj fdr analysis (mat):
 
   To run pleioFDR from console:
     ```
-    matlab -nodisplay -nosplah < src/condconjfdr/runme.m
+    matlab -nodisplay -nosplash < runme.m
     ```
+    
 ## pleioFDR results
 
   Results are placed in an output folder, defined in ``config.txt`` file. By default it is named ``results``.
@@ -120,8 +125,9 @@ and prepare input files for cond/conj fdr analysis (mat):
 
   Loci tables generated in the step above use custom non-standard logic to clump results based on LD structure.
   You may want to re-generate loci using ``sumstats.py clump`` script, which implements the same logic as in FUMA.
-  To do so,  convert ``results.mat`` into a text file (for example using ``scipy.io.loadmat`` and ``pandas.DataFrame.to_csv``), and then perform ``sumstats.py clump``.
-   At this step you may use ``ref9545380_bfile.tar.gz`` as a reference to preform clumping.
+  To do so,  convert ``results.mat`` into a text file (for example using ``scipy.io.loadmat``
+  and ``pandas.DataFrame.to_csv``), and then perform ``sumstats.py clump``.
+  At this step you may use ``ref9545380_bfile.tar.gz`` as a reference to preform clumping.
 
 ## Octave support
 
@@ -151,5 +157,5 @@ run:
 * last tested with octave version 4.0.2
 * *.mat files need to be saved with "-v7" max:
   ```
-  save('ldmat_v7.mat', 'LDr2', 'mafvec', '-v7') 
+  save('ref9545380_1kgPhase3eur_LDr2p1.mat', '-v7') 
   ```
