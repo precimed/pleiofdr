@@ -271,7 +271,7 @@ fprintf('done\n')
 % PLOT MANHATTAN
 if options.manh_plot
     fprintf('Creating Manhattan plots... ')
-    h_Manhattan = plot_Manhattan(results, traitname1, traitnames, options);
+    h_Manhattan = plot_Manhattan(results, traitname1, traitnames, chrnumvec, options);
 
     filetypes = {'fig'};
     for j = 1:length(filetypes)

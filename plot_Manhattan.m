@@ -1,4 +1,4 @@
-function  handles = plot_Manhattan(results,traitname1,traitnames,options)
+function  handles = plot_Manhattan(results,traitname1,traitnames,chrnumvec,options)
 %% PLOT_MANHATTAN Make Manhattan plots based on
 %     results.fdrmat    : (SNP x trait) FDR matrix
 %     results.imat      : (SNP x 1) SNPs above -log10(fdrthresh)
@@ -28,7 +28,7 @@ function  handles = plot_Manhattan(results,traitname1,traitnames,options)
 
 %% Customizable plot options
 
-chrnumlist = { 1:22 };            % chromosome subsets
+chrnumlist = { unique(chrnumvec) };            % chromosome subsets
 exclude_locations = { };            % start/end points of excluded locations, in cell of arrays
 showgenes = false;                     % switch off for faster plots
 fontsize_genenames = options.manh_fontsize_genenames; %14; %16;
@@ -128,6 +128,7 @@ for chri = 1:length(chrnumlist)
     if length(chr)>1
         for k = chr
             ind = find(chrnumvec==k);
+            if isempty(ind), continue; end;
             hold on;
             h=fill([ind(1) ind(end) ind(end) ind(1)],[0 0 300 300],[1 1 1] - graylevel * mod(k,2));
             set(h,'EdgeColor','none');
