@@ -45,7 +45,7 @@ Please read the [about.txt](http://norment.myftp.org:8080/pleiofdr/about.txt).
 ```
   wget http://norment.myftp.org:8080/pleiofdr/9545380.ref
   wget http://norment.myftp.org:8080/pleiofdr/CTG_COG_2018.mat
-  wegt http://norment.myftp.org:8080/pleiofdr/SSGAC_EDU_2016.mat
+  wget http://norment.myftp.org:8080/pleiofdr/SSGAC_EDU_2016.mat
   wget http://norment.myftp.org:8080/pleiofdr/about.txt
   wget http://norment.myftp.org:8080/pleiofdr/ref9545380_1kgPhase3eur_LDr2p1.mat
   wget http://norment.myftp.org:8080/pleiofdr/ref9545380_bfile.tar.gz
