@@ -1,0 +1,10 @@
+# Matlab auto-save files
+*.asv
+
+# PyCharm project files
+.idea
+
+# Python pre-compiled files
+*.pyc
+
+config.txt

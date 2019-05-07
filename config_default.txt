@@ -1,0 +1,90 @@
+# !! Do not edit !!
+# Copy this file("config_default.txt") to "config.txt" and make your modifications there
+
+# reference file, such as ref9545380_1kgPhase3eur_LDr2p1.mat, which contains variables
+# LDmat (binary sparse LD matrix), chrnumvec, posvec, mafvec, is_ambiguous, is_intergenic.
+# Feel free to specify full path to the file.
+reffile=ref9545380_1kgPhase3eur_LDr2p1.mat
+
+# Set path to the folder with traits files (PGC_SCZ_2014.mat, etc)
+# It is OK to keep 'traitfolder' empty. In this case 'traitfiles' must contain full path to each file.
+# Otherwise 'traitfiles' must give a file name within 'traitfolder', including .mat extension.
+traitfolder=SUMSTAT\TMP\mat_9545380
+
+# Set your GWAS file here for trait1 and other traits to condition on
+traitfile1=CTG_COG_2018.mat
+traitname1=COG
+traitfiles={'SSGAC_EDU_2016.mat'}
+traitnames={'EDU'}
+
+# Output directory
+outputdir=results
+
+# stattype can be either conjfdr (conjunctive fdr) or condfdr (conditional fdr).
+# recommended values of fdrthresh is 0.05 for conjfdr, and 0.01 for condfdr.
+stattype=conjfdr
+fdrthresh=0.01
+
+# Random pruning options (on/off, number of iterations)
+randprune=true
+randprune_n=20
+
+# Exclusion regions in format [CHR BP_from BP_to],
+# where CHR is chromosome and BP_from and BP_to are genomic coordinates (hg19 build).
+# To specify multiple regions use ;
+# Example for MHC and chr8 inversion: [6 25119106 33854733; 8 7200000 12500000]
+exclude_chr_pos=[6 25119106 33854733]
+
+# Customizations for manhattan plot
+manh_fontsize_genenames=12
+manh_yspace=0.75
+manh_ymargin=0.25
+manh_colorlist=[1 0 0; 1 0.5 0 ; 0 0.75 0.75; 0 0.5 0; 0.75 0 0.75; 0 0 1; 0 1 0; 0 1 1]
+
+# ========= Other miscellaneous options (expert usage only) =========
+
+# Force random prune indices (pruneidx) to be re-generated for each run.
+# Setting this to false will preserve pruneidx across re-runs (unless you restart matlab or clear workspace).
+# Be careful with setting this to false.
+# Remember to clear matlab workspace whenever you change ldmatfile or randprune_n.
+reset_pruneidx=true
+
+# randprune_repeats allows to choose from three resampling options ('default', 'maxout', 'none')
+randprune_repeats=default
+
+# Threshold on Fisher's combined statistics (flp)
+# SNPs with flp below this thresh will not make it into the resulting loci table.
+# Set this parameter to 1 results to disable filtering on flp.
+pthresh=1
+
+# Genomic correction options
+# perform_gc turns genomic correction on or off
+# use_standard_gc=true uses median genomic correction (standard from the literature),
+# while use_standard_gc=false imply our in-house developed genomic correction procedure (typically more conservative).
+# randprune_gc=true imply that lambdaGC factor will be calculated after random pruning.
+perform_gc=true
+use_standard_gc=false
+randprune_gc=true
+
+# By default the exclusion list (exclude_chr_pos) is applied only when cond/conj FDR model is fit, but not during discovery.
+# Setting exclude_from_discovery=true will apply exclusion list also to the discovery.
+# This flag has not effect on 'exclude_ambiguous_snps' option.
+exclude_from_discovery=false
+
+# Minor allele frequency threshold to exclude rare SNPs.
+# Note that if some SNPs have undefined (unknown) MAF they will be excluded too.
+# The likely reason for a SNP to have an undefined MAF is because it was not found in 1kG genotypes.
+# For such SNPs we also don't know their LD structure,
+# and hence can't perform random pruning on them.
+# You may set mafthresh=nan to keep such SNPs in the analysis,
+# but this is not recommended.
+mafthresh = 0.005
+
+# A flag indicating whether to exclude ambiguous SNPs (A/T and C/G) from the analysis.
+# When set to 'true' ambigous SNPs will be excluded both from fit and from discovery,
+# regardless of the 'exclude_from_discovery' setting.
+exclude_ambiguous_snps = true
+
+# A flag indicating whether to show plots on screen.
+# This applies to manhattan plot, QQ plots, Fold enrichment plots, and FDR lookup heatmap.
+onscreen = true
