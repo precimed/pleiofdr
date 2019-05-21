@@ -28,7 +28,7 @@ function  handles = plot_Manhattan(results,traitname1,traitnames,chrnumvec,optio
 
 %% Customizable plot options
 
-chrnumlist = { unique(chrnumvec) };            % chromosome subsets
+chrnumlist = { double(unique(chrnumvec)') };            % chromosome subsets
 exclude_locations = { };            % start/end points of excluded locations, in cell of arrays
 showgenes = false;                     % switch off for faster plots
 fontsize_genenames = options.manh_fontsize_genenames; %14; %16;
