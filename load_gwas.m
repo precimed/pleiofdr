@@ -1,4 +1,4 @@
-function [logpmat,zmat]=load_gwas(traitfiles)
+function [logpmat,zmat]=load_gwas(traitfiles, nsnps)
 %% LOAD_GWAS   Load logpvec* and zvec* from MAT files
 
 if iscell(traitfiles), nfiles = length(traitfiles); else nfiles = 1; end;
@@ -38,6 +38,9 @@ for i=1:nfiles
     if ~isvector(lp) || ~isvector(z)
         error( sprintf('logp and z must be vectors, not matrices') );
     end
+    
+    if length(lp) ~= nsnps, error('%s logpvec has %i snps - expected %i snps', file, length(lp), nsnps); end
+    if length(z) ~= nsnps,  error('%s zvec has %i snps - expected %i snps', file, length(z), nsnps); end
     
     % Assign to logpmat 
     logpmat(:,i) = lp;
