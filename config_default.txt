@@ -41,6 +41,11 @@ manh_yspace=0.75
 manh_ymargin=0.25
 manh_colorlist=[1 0 0; 1 0.5 0 ; 0 0.75 0.75; 0 0.5 0; 0.75 0 0.75; 0 0 1; 0 1 0; 0 1 1]
 
+# An optional file containing additional reference information (e.g. the 9545380.ref file)
+# 'SNP' column - for SNP rs# or other marker names
+# 'A1' and 'A2' columns - alleles information
+refinfo=
+
 # ========= Other miscellaneous options (expert usage only) =========
 
 # Force random prune indices (pruneidx) to be re-generated for each run.

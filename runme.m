@@ -12,6 +12,7 @@ CFG_TRAITNAME1_STR='traitname1';
 CFG_TRAITFILES_CELL='traitfiles';
 CFG_TRAITNAMES_CELL='traitnames';  
 CFG_REFFILE_STR='reffile';
+CFG_REFINFO_STR='refinfo';
 CFG_MATLIBRARY_PATH_STR='mlibrary';
 CFG_RANDPRUNE_BOOL='randprune';
 CFG_RANDPRUNE_GC_BOOL='randprune_gc';
@@ -44,6 +45,7 @@ cfg.declare(CFG_TRAITNAME1_STR, 'SCZ');
 cfg.declare(CFG_TRAITFILES_CELL, '{''COG_charge.mat''}');
 cfg.declare(CFG_TRAITNAMES_CELL, '{''COGNITION''}');
 cfg.declare(CFG_REFFILE_STR, 'ref9545380_1kgPhase3eur_LDr2p1.mat');
+cfg.declare(CFG_REFINFO_STR, '');
 cfg.declare(CFG_MATLIBRARY_PATH_STR, './');
 cfg.declare(CFG_RANDPRUNE_BOOL, true);
 cfg.declare(CFG_RANDPRUNE_GC_BOOL, false);
@@ -129,6 +131,20 @@ if ~exist('LDmat', 'var')
     assert(ismatrix(mafvec),             'error loading mafvec');
     assert(exist('is_intergenic', 'var') == 1, 'error loading is_intergenic');
     ivec0=logical(is_intergenic);
+    fprintf('done\n')
+end
+
+
+if ~isempty(cfg.get_str(CFG_REFINFO_STR))
+    refinfo=cfg.get_str(CFG_REFINFO_STR);
+    fprintf('Loading additional reference information file ("%s") ...', refinfo);
+    refinfo_df=readtable(refinfo, 'Delimiter', 'tab', 'FileType', 'text');
+    snpidlist=table2array(refinfo_df(:, 'SNP'), 'error loading SNP column');
+    A1vec=table2array(refinfo_df(:, 'A1'), 'error loading A1 column');
+    A2vec=table2array(refinfo_df(:, 'A2'), 'error loading A2 column');
+    assert(length(snpidlist) == length(ivec0))
+    assert(length(A1vec) == length(ivec0))
+    assert(length(A2vec) == length(ivec0))
     fprintf('done\n')
 end
 

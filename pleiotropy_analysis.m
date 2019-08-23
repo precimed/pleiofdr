@@ -242,10 +242,10 @@ end
 
 %% SAVE FDR-TABLES AND PLOT MANHATTAN AT A SPECIFIC THRESHOLD
 
-snpidlist = cell(size(chrnumvec)); snpidlist(:) = {''};
+if ~exist('snpidlist', 'var'), snpidlist = cell(size(chrnumvec)); snpidlist(:) = {''}; end;
 genenamelist = cell(size(chrnumvec)); genenamelist(:) = {''};
-A1vec = cell(size(chrnumvec)); A1vec(:) = {''};
-A2vec = cell(size(chrnumvec)); A2vec(:) = {''}; 
+if ~exist('A1vec', 'var'), A1vec = cell(size(chrnumvec)); A1vec(:) = {''}; end;
+if ~exist('A2vec', 'var'), A2vec = cell(size(chrnumvec)); A2vec(:) = {''}; end;
 
 % FIND LOCI AT GIVEN THRESHOLD
 [imat, imat2, logfdrmat] = ind_loci_idx(fdrmat, flp, LDmat, mafvec, options);
