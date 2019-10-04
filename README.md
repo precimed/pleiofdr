@@ -62,7 +62,7 @@ Alternatively, you may get the code by cloning git repository from command line:
 
 Download reference data from [here](https://precimed.s3-eu-west-1.amazonaws.com/pleiofdr). 
 The reference is based on 1000 Genomes phase 3 data (May 2, 2013 release).
-Variant calls (vcf files) for 22 autosomes were downloaded from [here](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/). 
+Variant calls (vcf files) for 22 autosomes were downloaded from ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502 .
 We kept only samples of European ancestry (IBS, TSI, GBR, CEU, FIN populations) 
 with missing call rate below 10% and only biallelic variants with non-duplicated ids, 
 minor allele frequency above 1%, missing call rate below 10% and Hardy-Weinberg equilibrium
