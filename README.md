@@ -61,7 +61,15 @@ Alternatively, you may get the code by cloning git repository from command line:
 ## Data downloads
 
 Download reference data from [here](https://precimed.s3-eu-west-1.amazonaws.com/pleiofdr). 
-Please read the description in [about.txt](https://precimed.s3-eu-west-1.amazonaws.com/pleiofdr/about.txt).
+The reference is based on 1000 Genomes phase 3 data (May 2, 2013 release).
+Variant calls (vcf files) for 22 autosomes were downloaded from 
+ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/. 
+We kept only samples of European ancestry (IBS, TSI, GBR, CEU, FIN populations) 
+with missing call rate below 10% and only biallelic variants with non-duplicated ids, 
+minor allele frequency above 1%, missing call rate below 10% and Hardy-Weinberg equilibrium
+exact test p-values greater than 1.E-20. 
+The filtering was performed with PLINK 1.9. Resulted template contained 503 samples and 9,545,380 variants.
+Further details are available in [about.txt](https://precimed.s3-eu-west-1.amazonaws.com/pleiofdr/about.txt).
 
   ```
   wget https://precimed.s3-eu-west-1.amazonaws.com/pleiofdr/about.txt
