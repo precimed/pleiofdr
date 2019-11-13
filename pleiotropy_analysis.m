@@ -213,31 +213,31 @@ save(fullfile(options.outputdir, 'result.mat'), '-v6', 'fdrmat', 'logpvec1', 'lo
 mkdir(outputdir)
 filetypes = {'fig','jpg','png'};
 for j = 1:length(filetypes)
-    save_figure(h_qq,         filetypes{j}, sprintf('%s/%s_vs_%sqq', outputdir, traitname1, ...
-        sprintf('%s_',traitnames{:})));
+    save_figure(h_qq,         filetypes{j}, sprintf('%s/%s_vs_%sqq', outputdir, ...
+        traitname1, sprintf('%s_',traitnames{:})));
     save_figure(h_qq_inv,     filetypes{j}, sprintf('%s/%svs_%s_qq', outputdir, ...
-        sprintf('%s_',traitnames{:}),traitname1))
-    save_figure(h_tdr,         filetypes{j}, sprintf('%s/%s_vs_%stdr', outputdir, traitname1, ...
-        sprintf('%s_',traitnames{:})));
-    save_figure(h_tdr_inv,     filetypes{j}, sprintf('%s/%svs_%s_tdr', outputdir, ...
-        sprintf('%s_',traitnames{:}),traitname1))
-    save_figure(h_enrich,     filetypes{j}, sprintf('%s/%s_vs_%senrich', outputdir, traitname1, ...
-        sprintf('%s_',traitnames{:})));
+        sprintf('%s_',traitnames{:}), traitname1));
+    save_figure(h_tdr,        filetypes{j}, sprintf('%s/%s_vs_%stdr', outputdir, ...
+        traitname1, sprintf('%s_',traitnames{:})));
+    save_figure(h_tdr_inv,    filetypes{j}, sprintf('%s/%svs_%s_tdr', outputdir, ...
+        sprintf('%s_',traitnames{:}), traitname1));
+    save_figure(h_enrich,     filetypes{j}, sprintf('%s/%s_vs_%senrich', outputdir, ...
+        traitname1, sprintf('%s_',traitnames{:})));
     save_figure(h_enrich_inv, filetypes{j}, sprintf('%s/%svs_%s_enrich', outputdir, ...
-        sprintf('%s_',traitnames{:}),traitname1))
+        sprintf('%s_',traitnames{:}), traitname1));
 end
 fprintf('done\n')
 
 %% PLOT LOOKUP
 
 % AMD: how does plot_lookup use logpvec1 & logpmat2 vs. lookup12 and lookup21?
-h_lookup    = plot_lookup(logpvec1,logpmat2, traitname1, traitnames, options, LDmat, pruneidx, ...
-    excludevec, lookup12,lookup21);
+h_lookup    = plot_lookup(logpvec1, logpmat2, traitname1, traitnames, options, LDmat, pruneidx, ...
+    excludevec, lookup12, lookup21);
 
-filetypes = {'fig','jpg'};
+filetypes = {'fig','jpg','png'};
 for j = 1:length(filetypes)
-    saveas(h_lookup(1), sprintf('%s/%s%s_%s_lookup.%s', outputdir, traitname1,...
-    sprintf('_%s',traitnames{:}), options.stattype, filetypes{j}));
+    save_figure(h_lookup, filetypes{j}, sprintf('%s/%svs_%s_lookup', outputdir, ...
+        sprintf('%s_',traitnames{:}), traitname1));
 end
 
 %% SAVE FDR-TABLES AND PLOT MANHATTAN AT A SPECIFIC THRESHOLD
