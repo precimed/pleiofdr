@@ -76,7 +76,7 @@
 # * raw data: to save the raw genotype and annotation files.
 # * data process: to save the temporary files.
 # * tookit: contains the python script and software you need to use.
-workdir = /home/ref4ccFDR
+workdir = /home/ref4pleioFDR
 mkdir $workdir/rawdata $workdir/dataprocess
 
 # 1. Genotype Preparation 
