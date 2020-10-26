@@ -55,8 +55,8 @@ display(options)
 %% LOAD FILES
 
 fprintf('Loading GWAS .mat files... ')
-[logpvec1,zvec1]=load_gwas(traitfile1, length(chrnumvec));
-[logpmat2,zmat2]=load_gwas(traitfiles, length(chrnumvec));
+[logpvec1,zvec1]=load_gwas(traitfile1, length(chrnumvec), options.dummy_zscore);
+[logpmat2,zmat2]=load_gwas(traitfiles, length(chrnumvec), options.dummy_zscore);
 fprintf('done\n')
 
 %% EXCLUDE SPECIAL SNPS FROM ANALYSIS

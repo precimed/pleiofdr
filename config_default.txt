@@ -93,3 +93,9 @@ exclude_ambiguous_snps = true
 # A flag indicating whether to show plots on screen.
 # This applies to manhattan plot, QQ plots, Fold enrichment plots, and FDR lookup heatmap.
 onscreen = true
+
+# pleioFDR analysis does not require effect dirrection, and is based on p-values.
+# For historical reason the pleioFDR pipeline require also zscore as input, and report files with z-score, to allow user to asses effect direction.
+# However, if effect direction info is not available for your GWAS summary statistics, then you may want to overwrite the above behavior.
+# Setting `dummy_zscore = true` will force pleioFDR code to calcualte z-score from p-value (forcing them to be positive).
+dummy_zscore = false

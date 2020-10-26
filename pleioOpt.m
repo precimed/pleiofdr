@@ -59,6 +59,7 @@ classdef pleioOpt
         qq_annotation_r2 = [];
         use_standard_gc = false;
         exclude_ambiguous_snps = false;
+        dummy_zscore = false;
 
         % Controls whether SNPs from exclude_from_fit regions should be
         % excluded from FDR fit only, or also from discovery

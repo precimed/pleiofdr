@@ -1,4 +1,4 @@
-function [logpmat,zmat]=load_gwas(traitfiles, nsnps)
+function [logpmat,zmat]=load_gwas(traitfiles, nsnps, dummy_zscore)
 %% LOAD_GWAS   Load logpvec* and zvec* from MAT files
 
 if iscell(traitfiles), nfiles = length(traitfiles); else nfiles = 1; end;
@@ -26,14 +26,18 @@ for i=1:nfiles
     fprintf('%s... ',lpfield{1})
     lp = traits.(lpfield{1});
     
-    % Find which contains z (or beta)
+    % Find which field contains z
     id = find(strncmpi(fields,'z',1));
     zfield = fields( id );
-    if isempty(zfield),
+    if isempty(zfield) && ~dummy_zscore
         error( sprintf('Data file %s must contain variable z*\n',file) );
     end
-    fprintf('%s... ',zfield{1})
-    z = traits.(zfield{1});
+    if isempty(zfield)
+        z = abs(norminv(1/2*10 .^ -lp));
+    else
+        fprintf('%s... ',zfield{1})
+        z = traits.(zfield{1});
+    end
 
     if ~isvector(lp) || ~isvector(z)
         error( sprintf('logp and z must be vectors, not matrices') );

@@ -37,6 +37,7 @@ CFG_MAFTHRESH_NUM='mafthresh';
 CFG_USE_STANDARD_GC_BOOL='use_standard_gc';
 CFG_PERFORM_GC_BOOL='perform_gc';
 CFG_EXCLUDE_AMBIGUOUS_SNPS_BOOL='exclude_ambiguous_snps';
+CFG_DUMMY_ZSCORE_BOOL='dummy_zscore';
 
 % declare default parameters
 cfg.declare(CFG_TRAITFOLDER_STR,  '../example_data_for_pleiotropy');
@@ -71,6 +72,7 @@ cfg.declare(CFG_MAFTHRESH_NUM, 0.005);
 cfg.declare(CFG_USE_STANDARD_GC_BOOL, false);
 cfg.declare(CFG_PERFORM_GC_BOOL, true);
 cfg.declare(CFG_EXCLUDE_AMBIGUOUS_SNPS_BOOL, false);
+cfg.declare(CFG_DUMMY_ZSCORE_BOOL, false);
 
 % load config file if it was created
 if exist(config, 'file') == 2
@@ -116,6 +118,7 @@ options.exclude_from_fit_and_discovery = cfg.get_bool(CFG_EXCLUDE_FROM_DISCOVERY
 options.use_standard_gc = cfg.get_bool(CFG_USE_STANDARD_GC_BOOL);
 options.perform_gc = cfg.get_bool(CFG_PERFORM_GC_BOOL);
 options.exclude_ambiguous_snps = cfg.get_bool(CFG_EXCLUDE_AMBIGUOUS_SNPS_BOOL);
+options.dummy_zscore = cfg.get_bool(CFG_DUMMY_ZSCORE_BOOL);
 options.mafthresh = cfg.get_num(CFG_MAFTHRESH_NUM);
 
 %% LOAD FILES
