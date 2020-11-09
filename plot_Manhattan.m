@@ -31,15 +31,15 @@ function  handles = plot_Manhattan(results,traitname1,traitnames,chrnumvec,optio
 chrnumlist = { double(unique(chrnumvec)') };            % chromosome subsets
 exclude_locations = { };            % start/end points of excluded locations, in cell of arrays
 showgenes = false;                     % switch off for faster plots
-fontsize_genenames = options.manh_fontsize_genenames; %14; %16;
-fontsize_legends   = options.manh_fontsize_legends; %18; %22
-fontsize_axes      = options.manh_fontsize_axes; % 18; %22
+fontsize_genenames = 16; %14; %16;
+fontsize_legends   = 18; %18; %22
+fontsize_axes      = 13; % 18; %22
+fontsize_label      = 18; % 18; %22
 ymargin = options.manh_ymargin; % 1; %0.25;      % margin between points and genenames
 yspace  = options.manh_yspace; % 0.75; %0.5     % line spacing between genenames
-LegendLocation = 'NorthWest';
-graylevel = 0.25;                   % grayness level for chromosome fill
+LegendLocation = 'NorthEast';
+graylevel = 0.1;                   % grayness level for chromosome fill
 colorlist = options.manh_colorlist;
-
 
 %% Legacy codes
 
@@ -96,24 +96,21 @@ end
 
 % CORRECT the options stuff here
 
-handles = figure();
+%handles = figure();
+scrsz = get(0,'ScreenSize');
+handles = figure('Position',[1 scrsz(4)/2 scrsz(3) scrsz(4)/2]);
 figname = ['Manhattan ', sprintf('%s %s ',traitname1,traitnames{:}) ] ;
+set(gca,'FontSize',20)
 set(gcf,'Name',figname)
-set(gcf,'units','normalized','position',[0, 0, 1, 1]);
+%set(gcf,'units','normalized','position',[0, 0, 1, 1]);
 set(gca,'ColorOrder',colorlist)
 if showgenes, ylim_extra = 3; else ylim_extra = 1; end
-xlim([1,size(fdrmat,1)]), ylim([ 0,max(logfdrmat(:))+ylim_extra ])
+xlim([-100000,size(fdrmat,1)]), ylim([-0.1,max(logfdrmat(:))+ylim_extra ])
 switch options.stattype
     case 'condfdr'
-        colorlist(length(legends),:) = [0.1 0.1 0.1];  % black dots for unconditioned FDR
-        ylabel('Conditional -log_{10}(FDR)','FontSize',fontsize_axes);
+        colorlist(length(legends),:) = [0.5 0.5 0.5];  % black dots for unconditioned FDR
     case 'conjfdr'
-        ylabel('Conjunction -log_{10}(FDR)','FontSize',fontsize_axes);
 end
-xlabel('Chromosomal Location','FontSize',fontsize_axes);
-set(gca,'FontSize',fontsize_axes)
-
-
 
 
 %% DO MANHATTAN PLOT BY CHROMOSOME LIST
@@ -130,7 +127,7 @@ for chri = 1:length(chrnumlist)
             ind = find(chrnumvec==k);
             if isempty(ind), continue; end;
             hold on;
-            h=fill([ind(1) ind(end) ind(end) ind(1)],[0 0 300 300],[1 1 1] - graylevel * mod(k,2));
+            h=fill([ind(1) ind(end) ind(end) ind(1)],[0 0 300 300],[1 1 1] - graylevel * (1-mod(k,2)));
             set(h,'EdgeColor','none');
             if (~is_octave())
                 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
@@ -143,7 +140,6 @@ for chri = 1:length(chrnumlist)
         title(sprintf('Chromosome %d',chr),'FontSize',fontsize_axes);
         set(gca,'XTickLabel',[],'FontSize',fontsize_axes)
     end
-    
     
     %  This is a dummy plot for legend purposes
     switch(options.stattype)
@@ -163,7 +159,8 @@ for chri = 1:length(chrnumlist)
     % Draw threshold line
     indvec = (1:length(chrnumvec))';
     hold on
-    plot([indvec(1), indvec(end)],-log10([options.fdrthresh, options.fdrthresh]),':k')
+    %plot([indvec(1), indvec(end)],-log10([options.fdrthresh, options.fdrthresh]),':k','LineWidth', 1)
+    plot([-100000, indvec(end)],-log10([options.fdrthresh, options.fdrthresh]),':','color',[0,0,0],'LineWidth', 1.2)
     
     % Plot in three phases: (1) above threshold, (2) significant, (3) loci
     for phase=1:3
@@ -177,7 +174,6 @@ for chri = 1:length(chrnumlist)
                     ivec2 = false(size(ivec));
                 end
             end
-            
             mrkface = colorlist(i,:);
             switch phase
                 case 1   % do not pass threshold
@@ -203,16 +199,25 @@ for chri = 1:length(chrnumlist)
         
             if(options.manh_redraw), drawnow, end
         end
-        
     end
 end
 
 if length(chr)>1
-    h=legend(legends(legendsorder),'Location',LegendLocation);
-    set(gca,'FontSize',fontsize_axes);
+    h=legend(legends(legendsorder),'Box','off','Location',LegendLocation);
     set(h,'FontSize',fontsize_legends);
 end % Should automatically modify legends ith "trait1 & trait2"
 
+switch options.stattype
+    case 'condfdr'
+        ylabel('-log_{10}(condFDR)','FontSize',fontsize_label);
+    case 'conjfdr'
+        ylabel('-log_{10}(conjFDR)','FontSize',fontsize_label);
+end
+xlabel('Chromosome','FontSize',fontsize_label);
+xtickangle(45)
+set(gca,'LineWidth',1.2,'TickDir','out')
+set(get(gca,'XAxis'),'TickLength',[0.007 0.007])
+set(get(gca,'YAxis'),'TickLength',[0.004 0.004])
 
 %% GENE NAMES -----------------------------------------
 % One gene may have multiple loci according to LD
@@ -300,4 +305,3 @@ if showgenes
         set( textboxhandle(:), 'FontSize', fontsize_genenames*yl_old(2)/yl(2) )
     end
 end
-

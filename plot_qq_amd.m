@@ -34,9 +34,9 @@ if ~use_annotations, logpthreshvec = opts.qqbreaks;
 else, logpthreshvec = opts.qq_annotation_r2; end
 if isempty(logpthreshvec), return; end
 hv = opts.t1breaks;
-fontsize_axes = 16;
-fontsize_legends = 16;
-fontsize_title = 16;
+fontsize_axes = 20;
+fontsize_legends = 20;
+fontsize_title = 26;
 
 % Create random pruning index if not available
 if opts.randprune
@@ -50,7 +50,7 @@ end
 
 % Plotting Q-Q for each trait
 scrsz = get(0,'ScreenSize');
-figure('Position',[1 scrsz(4)/2 scrsz(3)/1.5 scrsz(4)/1.5]);
+figure('Position',[1 scrsz(4)/2 scrsz(4)/1.5 scrsz(4)/1.5]);
 if ~flip_traits
     set(gcf, 'Name', sprintf('QQ %s | %s', traitname1, sprintf('%s ',traitnames{:})))
 else
@@ -138,7 +138,7 @@ for iteri = 1:ncondtraits
         end
     end
     if ~plot_tdr
-        h1(j+1) = plot(hv, hv, 'k--');
+        h1(j+1) = plot(hv, hv, 'k--', 'LineWidth', 1.5);
         %axis equal 
         xlim([0 7.3]); ylim([0 7.3]);
     else
@@ -155,7 +155,7 @@ for iteri = 1:ncondtraits
         trait1 = traitnames{iteri}; trait2 = traitname1;
     end
 
-    title(sprintf('%s | %s',trait1,trait2), 'FontSize', fontsize_title)
+    title(sprintf('%s | %s',trait1,trait2), 'fontweight', 'normal', 'FontSize', fontsize_title)
 
     % Legend
     legends = cell(length(logpthreshvec), 1);
@@ -173,14 +173,18 @@ for iteri = 1:ncondtraits
         end
         legends{j+1} = 'Expected';
         if (~is_octave())
-            legend(h1,legends,'Location','SouthEast','FontSize',fontsize_legends);
+            legend(h1,legends,'Box','off','Location','SouthEast','FontSize',fontsize_legends);
         end
     end
     handles(iteri) = gcf;
+    set(gca,'linewidth',1)
+    set(gca,'TickLength',[0.014 0.014])
+    set(gca,'XTick',[0:1:7])
     if plot_tdr
         set(xlabel(sprintf('Nominal -log_{10}(p_{%s})',trait1)),'FontSize',24)
         set(ylabel(sprintf('Conditional TDR_{%s|%s}',trait1, trait2)),'FontSize',24)
     else
+        set(gca,'YTick',[0:1:7])
         set(ylabel(sprintf('Nominal -log_{10}(p_{%s})',trait1)),'FontSize',24)
         set(xlabel(sprintf('Empirical -log_{10}(q_{%s})',trait1)),'FontSize',24)
     end

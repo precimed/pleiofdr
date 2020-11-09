@@ -160,6 +160,9 @@ for iteri = 1:ncondtraits
     if (flip_traits)
         set(ylabel(sprintf('Fold Enrichment %s | %s',trait1,trait2)),'FontSize',24)
         set(xlabel(sprintf('Nominal -log_{10}(p_{%s})',trait1)),'FontSize',24)
+    else
+        set(ylabel(sprintf('Fold Enrichment %s | %s',trait2,trait1)),'FontSize',24)
+        set(xlabel(sprintf('Nominal -log_{10}(p_{%s})',trait2)),'FontSize',24)
     end
     
 end
@@ -177,14 +180,4 @@ for iteri=1:ncondtraits
     ylim([0,ymax]);
     set(gca,'YScale','linear')
 %    set(gca,'YScale','log')
-end
-
-
-if(~flip_traits)
-yl = sprintf('Fold Enrichment %s | Phenotype',traitname1);
-[~,h]=suplabel(yl,'y');
-set(h,'FontSize',24)
-xl = sprintf('Nominal -log_{10}(p_{%s})',traitname1 );
-[~,h]=suplabel(xl);
-set(h,'FontSize',24)
 end

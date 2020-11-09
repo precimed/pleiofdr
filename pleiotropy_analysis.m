@@ -211,7 +211,7 @@ qq_t1breaks                    = options.t1breaks;
 save(fullfile(options.outputdir, 'result.mat'), '-v6', 'fdrmat', 'logpvec1', 'logpmat2', 'zvec1', 'zmat2', 'excludevec', 'mafvec', 'mat_qq', 'mat_qq_inv', 'mat_enrich', 'mat_enrich_inv', 'qq_t1breaks');
 
 mkdir(outputdir)
-filetypes = {'fig','jpg','png'};
+filetypes = {'fig','png','svg'};
 for j = 1:length(filetypes)
     save_figure(h_qq,         filetypes{j}, sprintf('%s/%s_vs_%sqq', outputdir, ...
         traitname1, sprintf('%s_',traitnames{:})));
@@ -234,7 +234,7 @@ fprintf('done\n')
 h_lookup    = plot_lookup(logpvec1, logpmat2, traitname1, traitnames, options, LDmat, pruneidx, ...
     excludevec, lookup12, lookup21);
 
-filetypes = {'fig','jpg','png'};
+filetypes = {'fig','png','svg'};
 for j = 1:length(filetypes)
     save_figure(h_lookup, filetypes{j}, sprintf('%s/%svs_%s_lookup', outputdir, ...
         sprintf('%s_',traitnames{:}), traitname1));
@@ -270,11 +270,20 @@ fprintf('done\n')
 if options.manh_plot
     fprintf('Creating Manhattan plots... ')
     h_Manhattan = plot_Manhattan(results, traitname1, traitnames, chrnumvec, options);
-
-    filetypes = {'fig'};
+    switch options.stattype
+        case 'condfdr'
+            filetypes = {'fig','png'};
+        case 'conjfdr'
+            filetypes = {'fig','png','svg'};
+    end
     for j = 1:length(filetypes)
-        save_figure(h_Manhattan, filetypes{j}, sprintf('%s/%s%s_%s_%g_manhattan', outputdir, ...
-            traitname1, sprintf('_%s',traitnames{:}), options.stattype, options.fdrthresh));
+        if strcmp(filetypes{j}, 'png')
+            save_figure(h_Manhattan, filetypes{j}, sprintf('%s/%s%s_%s_%g_manhattan.png', outputdir, ...
+                traitname1, sprintf('_%s',traitnames{:}), options.stattype, options.fdrthresh));
+        else
+            save_figure(h_Manhattan, filetypes{j}, sprintf('%s/%s%s_%s_%g_manhattan', outputdir, ...
+                traitname1, sprintf('_%s',traitnames{:}), options.stattype, options.fdrthresh));
+        end
     end
     fprintf('done\n')
 end
