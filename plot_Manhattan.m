@@ -214,7 +214,7 @@ switch options.stattype
         ylabel('-log_{10}(conjFDR)','FontSize',fontsize_label);
 end
 xlabel('Chromosome','FontSize',fontsize_label);
-xtickangle(45)
+%xtickangle(45)
 set(gca,'LineWidth',1.2,'TickDir','out')
 set(get(gca,'XAxis'),'TickLength',[0.007 0.007])
 set(get(gca,'YAxis'),'TickLength',[0.004 0.004])
