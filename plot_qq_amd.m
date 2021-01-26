@@ -49,7 +49,7 @@ if opts.randprune
 end
 
 % Plotting Q-Q for each trait
-scrsz = get(0,'ScreenSize');
+scrsz = [0 0 1920 1080]
 figure('Position',[1 scrsz(4)/2 scrsz(4)/1.5 scrsz(4)/1.5]);
 if ~flip_traits
     set(gcf, 'Name', sprintf('QQ %s | %s', traitname1, sprintf('%s ',traitnames{:})))
