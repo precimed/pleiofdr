@@ -99,3 +99,6 @@ onscreen = true
 # However, if effect direction info is not available for your GWAS summary statistics, then you may want to overwrite the above behavior.
 # Setting `dummy_zscore = true` will force pleioFDR code to calcualte z-score from p-value (forcing them to be positive).
 dummy_zscore = false
+
+# A flag indicating whether to exit matlab upon completion of pleioFDR analysis.
+exit_matlab_upon_completion = false
