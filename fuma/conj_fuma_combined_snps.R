@@ -7,8 +7,7 @@ args <- commandArgs(TRUE)
 lead1=read.csv(args[1],sep = '\t',stringsAsFactors=FALSE)
 #lead2=subset(lead1, is_locus_lead == "True")
 lead3=lead1[order(lead1$locusnum, lead1$FDR),]
-#lead4 = lead3[!duplicated(lead3$locusnum),]
-lead4=lead3
+lead4 = lead3[!duplicated(lead3$CAND_SNP),]
 #lead5=subset(lead4, select = -c(is_locus_lead) )
 lead5=lead4
 #snp1=read.csv('fuma_output_fin1/FUMA_conj_bmi_snps_job139939/snps.txt',sep = '\t')
@@ -25,39 +24,34 @@ trait2=args[6]
 #trait2='BMI'
 #st_cols=list('PVAL','Z','OR','BETA','SE')
 
-library(dplyr)
-leadsnp2 %>% mutate_if(is.factor, as.character) -> leadsnp2
-sm1 %>% mutate_if(is.factor, as.character) -> sm1
-sm2 %>% mutate_if(is.factor, as.character) -> sm2
+if ('PVAL' %in% colnames(sm1) & ('PVAL' %in% colnames(sm2)))
+  leadsnp2[paste0('PVAL_in_', trait1)]=sm1$PVAL[match(leadsnp2$CAND_SNP,sm1$SNP)]
+if ('Z' %in% colnames(sm1) & ('Z' %in% colnames(sm2)))
+  leadsnp2[paste0('Z_in_', trait1)]=sm1$Z[match(leadsnp2$CAND_SNP,sm1$SNP)]
+if ('OR' %in% colnames(sm1) & ('OR' %in% colnames(sm2)))
+  leadsnp2[paste0('OR_in_', trait1)]=sm1$OR[match(leadsnp2$CAND_SNP,sm1$SNP)]
+if ('BETA' %in% colnames(sm1) & ('BETA' %in% colnames(sm2)))
+  leadsnp2[paste0('BETA_in_', trait1)]=sm1$BETA[match(leadsnp2$CAND_SNP,sm1$SNP)]
+if ('SE' %in% colnames(sm1) & ('SE' %in% colnames(sm2)))
+  leadsnp2[paste0('SE_in_', trait1)]=sm1$SE[match(leadsnp2$CAND_SNP,sm1$SNP)]
 
 if ('PVAL' %in% colnames(sm1) & ('PVAL' %in% colnames(sm2)))
-  leadsnp2[paste0('PVAL_in_', trait1)]=sm1$PVAL[match(leadsnp2$LEAD_SNP,sm1$SNP)]
+  leadsnp2[paste0('PVAL_in_', trait2)]=sm2$PVAL[match(leadsnp2$CAND_SNP,sm2$SNP)]
 if ('Z' %in% colnames(sm1) & ('Z' %in% colnames(sm2)))
-  leadsnp2[paste0('Z_in_', trait1)]=sm1$Z[match(leadsnp2$LEAD_SNP,sm1$SNP)]
+  leadsnp2[paste0('Z_in_', trait2)]=sm2$Z[match(leadsnp2$CAND_SNP,sm2$SNP)]
 if ('OR' %in% colnames(sm1) & ('OR' %in% colnames(sm2)))
-  leadsnp2[paste0('OR_in_', trait1)]=sm1$OR[match(leadsnp2$LEAD_SNP,sm1$SNP)]
+  leadsnp2[paste0('OR_in_', trait2)]=sm2$OR[match(leadsnp2$CAND_SNP,sm2$SNP)]
 if ('BETA' %in% colnames(sm1) & ('BETA' %in% colnames(sm2)))
-  leadsnp2[paste0('BETA_in_', trait1)]=sm1$BETA[match(leadsnp2$LEAD_SNP,sm1$SNP)]
+  leadsnp2[paste0('BETA_in_', trait2)]=sm2$BETA[match(leadsnp2$CAND_SNP,sm2$SNP)]
 if ('SE' %in% colnames(sm1) & ('SE' %in% colnames(sm2)))
-  leadsnp2[paste0('SE_in_', trait1)]=sm1$SE[match(leadsnp2$LEAD_SNP,sm1$SNP)]
-
-if ('PVAL' %in% colnames(sm1) & ('PVAL' %in% colnames(sm2)))
-  leadsnp2[paste0('PVAL_in_', trait2)]=sm2$PVAL[match(leadsnp2$LEAD_SNP,sm2$SNP)]
-if ('Z' %in% colnames(sm1) & ('Z' %in% colnames(sm2)))
-  leadsnp2[paste0('Z_in_', trait2)]=sm2$Z[match(leadsnp2$LEAD_SNP,sm2$SNP)]
-if ('OR' %in% colnames(sm1) & ('OR' %in% colnames(sm2)))
-  leadsnp2[paste0('OR_in_', trait2)]=sm2$OR[match(leadsnp2$LEAD_SNP,sm2$SNP)]
-if ('BETA' %in% colnames(sm1) & ('BETA' %in% colnames(sm2)))
-  leadsnp2[paste0('BETA_in_', trait2)]=sm2$BETA[match(leadsnp2$LEAD_SNP,sm2$SNP)]
-if ('SE' %in% colnames(sm1) & ('SE' %in% colnames(sm2)))
-  leadsnp2[paste0('SE_in_', trait2)]=sm2$SE[match(leadsnp2$LEAD_SNP,sm2$SNP)]
+  leadsnp2[paste0('SE_in_', trait2)]=sm2$SE[match(leadsnp2$CAND_SNP,sm2$SNP)]
 
 leadsnp3=subset(leadsnp2, FDR < 0.05 & R2 > 0.6)
 leadsnp4=leadsnp3[order(leadsnp3$locusnum),]
 
 
-leadsnp4[paste0('A1_in_',trait1)]=sm1$A1[match(leadsnp4$LEAD_SNP,sm1$SNP)]
-leadsnp4[paste0('A1_in_',trait2)]=sm2$A1[match(leadsnp4$LEAD_SNP,sm2$SNP)]
+leadsnp4[paste0('A1_in_',trait1)]=sm1$A1[match(leadsnp4$CAND_SNP,sm1$SNP)]
+leadsnp4[paste0('A1_in_',trait2)]=sm2$A1[match(leadsnp4$CAND_SNP,sm2$SNP)]
 
 
 #leadsnp4[paste0('Z_recalculated_in_',trait1)]=ifelse(leadsnp4$A1 == leadsnp4[[paste0('A1_in_',trait1)]], 
