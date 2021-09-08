@@ -4,7 +4,7 @@ print('std sumstats for TRAIT2, TRAIT1 name, TRAIT2 name')
 print('to produce conj_0.05_TRAIT1_vs_TRAIT2_snps.csv')
 args <- commandArgs(TRUE)
 #lead1=read.csv('fuma_input/conj.md_bmi.snps.csv',sep = '\t')
-lead1=read.csv(args[1],sep = '\t')
+lead1=read.csv(args[1],sep = '\t',stringsAsFactors=FALSE)
 #lead2=subset(lead1, is_locus_lead == "True")
 lead3=lead1[order(lead1$locusnum, lead1$FDR),]
 #lead4 = lead3[!duplicated(lead3$locusnum),]
@@ -12,13 +12,13 @@ lead4=lead3
 #lead5=subset(lead4, select = -c(is_locus_lead) )
 lead5=lead4
 #snp1=read.csv('fuma_output_fin1/FUMA_conj_bmi_snps_job139939/snps.txt',sep = '\t')
-snp1=read.csv(args[2],sep = '\t')
+snp1=read.csv(args[2],sep = '\t',stringsAsFactors=FALSE)
 leadsnp1=merge(lead5,snp1,by.x = 'CAND_SNP',by.y = 'rsID')
 leadsnp2=leadsnp1[,c(2,3,4,5,1,6,7,8,9,10,11,20:31)]
 #sm1=read.table('sumstat-std/PGC_SCZ_0518_EUR.sumstats.gz',sep = '\t',header = T)
 #sm2=read.table('sumstat-std/GIANT_BMI_2018_UKB_v2.sumstats.gz',sep = '\t',header = T)
-sm1=read.table(args[3],sep = '\t',header = T)
-sm2=read.table(args[4],sep = '\t',header = T)
+sm1=read.table(args[3],sep = '\t',header = T,stringsAsFactors=FALSE)
+sm2=read.table(args[4],sep = '\t',header = T,stringsAsFactors=FALSE)
 trait1=args[5]
 trait2=args[6]
 #trait1='SCZ'
