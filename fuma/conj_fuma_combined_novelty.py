@@ -27,9 +27,9 @@ def novelty_check(lead,gwas,snp,db,nov,trait1,trait2):
     nv1['MinBP']=nv1['MinBP'].astype(int)
     nv1['MaxBP']=nv1['MaxBP'].astype(int)
     nv1.CHR=nv1.CHR.astype(int)
-    db1=db1[db1.chromosome.str.isnumeric()]
+    db1=db1[db1.chromosome.astype('str').str.isnumeric()]
     db1.chromosome=db1.chromosome.astype(int)
-    db1['min_bp']=db1['min_bp'].astype(float)
+    db1['min_bp']=db1['min_bp'].astype(int)
     db1['max_bp']=db1['max_bp'].astype(int)
     a = nv1['MinBP'].to_numpy()
     b = nv1['MaxBP'].to_numpy()
@@ -44,6 +44,7 @@ def novelty_check(lead,gwas,snp,db,nov,trait1,trait2):
     nv1[f'Novel_in_{trait1}']=np.where(((nv1.Novel_in_GWAScatalog=="Yes") & (nv1.Novel_in_Database=='Yes')),'Yes','No')
     nv1=nv1.drop(['Novel_in_GWAScatalog', 'Novel_in_Database'], axis = 1)
     nv1.to_csv(f'conjFDR_0.05_{trait1}_vs_{trait2}_novelty.csv',index=False)
-    
+ 
+
 novelty_check(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5],sys.argv[6],sys.argv[7])
 
