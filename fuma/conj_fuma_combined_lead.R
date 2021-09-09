@@ -22,10 +22,6 @@ trait2=args[6]
 #trait1='DEP'
 #trait2='BMI'
 #st_cols=list('PVAL','Z','OR','BETA','SE')
-library(dplyr)
-leadsnp2 %>% mutate_if(is.factor, as.character) -> leadsnp2
-sm1 %>% mutate_if(is.factor, as.character) -> sm1
-sm2 %>% mutate_if(is.factor, as.character) -> sm2
 
 if ('PVAL' %in% colnames(sm1) & ('PVAL' %in% colnames(sm2)))
   leadsnp2[paste0('PVAL_in_', trait1)]=sm1$PVAL[match(leadsnp2$LEAD_SNP,sm1$SNP)]
