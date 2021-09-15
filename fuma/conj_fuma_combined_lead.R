@@ -56,14 +56,14 @@ leadsnp4[paste0('A1_in_',trait1)]=sm1$A1[match(leadsnp4$LEAD_SNP,sm1$SNP)]
 leadsnp4[paste0('A1_in_',trait2)]=sm2$A1[match(leadsnp4$LEAD_SNP,sm2$SNP)]
 
 
-#leadsnp4[paste0('Z_recalculated_in_',trait1)]=ifelse(leadsnp4$A1 == leadsnp4[[paste0('A1_in_',trait1)]], 
-#                                                     leadsnp4[[paste0('Z_in_',trait1)]], (-1)*leadsnp4[[paste0('Z_in_',trait1)]])
-leadsnp4[paste0('Z_recalculated_in_',trait2)]=ifelse(leadsnp4[[paste0('A1_in_',trait1)]] == leadsnp4[[paste0('A1_in_',trait2)]],
+leadsnp4[paste0('Z_recalculated_in_',trait1)]=ifelse(leadsnp4$A1 == leadsnp4[[paste0('A1_in_',trait1)]], 
+                                                     leadsnp4[[paste0('Z_in_',trait1)]], (-1)*leadsnp4[[paste0('Z_in_',trait1)]])
+leadsnp4[paste0('Z_recalculated_in_',trait2)]=ifelse(leadsnp4$A1 == leadsnp4[[paste0('A1_in_',trait2)]],
 						     leadsnp4[[paste0('Z_in_',trait2)]], (-1)*leadsnp4[[paste0('Z_in_',trait2)]])
 
 
-leadsnp4$ConcordEffect=ifelse(leadsnp4[[paste0('Z_in_',trait1)]] > 0 & leadsnp4[[paste0('Z_recalculated_in_',trait2)]] > 0,'Yes',
-                              ifelse(leadsnp4[[paste0('Z_in_',trait1)]] < 0 & leadsnp4[[paste0('Z_recalculated_in_',trait2)]] < 0,
+leadsnp4$ConcordEffect=ifelse(leadsnp4[[paste0('Z_recalculated_in_',trait1)]] > 0 & leadsnp4[[paste0('Z_recalculated_in_',trait2)]] > 0,'Yes',
+                              ifelse(leadsnp4[[paste0('Z_recalculated_in_',trait1)]] < 0 & leadsnp4[[paste0('Z_recalculated_in_',trait2)]] < 0,
                               'Yes','No'))
 
 write.csv(leadsnp4, file = paste0('conjFDR_0.05_',trait1,'_vs_',trait2, "_lead.csv"), sep='\t', row.names = FALSE)
