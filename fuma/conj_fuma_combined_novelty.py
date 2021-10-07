@@ -39,8 +39,7 @@ def novelty_check(lead,gwas,snp,db,nov,trait1,trait2):
     c = db1['min_bp'].to_numpy()[:, None]
     d = db1['max_bp'].to_numpy()[:, None]
     result = ((c1 == c2) & (a >= c) & (a <= d)) | ((c1 == c2) & (b >= c) & (b <= d))
-    nv1['Novel_in_Database'] = ~result.any(axis=0)
-    nv1.Novel_in_Database=nv1.Novel_in_Database.map({True: 'Yes', False: 'No'})
+    nv1['Novel_in_Database'] = np.where(result.any(axis=0), 'No', 'Yes')
     nv1[f'Novel_in_{trait1}']=np.where(((nv1.Novel_in_GWAScatalog=="Yes") & (nv1.Novel_in_Database=='Yes')),'Yes','No')
     nv1=nv1.drop(['Novel_in_GWAScatalog', 'Novel_in_Database'], axis = 1)
     nv1.to_csv(f'conjFDR_0.05_{trait1}_vs_{trait2}_novelty.csv',index=False)
