@@ -38,7 +38,7 @@ def novelty_check(lead,gwas,snp,db,nov,trait1,trait2):
     # Raise the columns in db1 by a dimension to enable numpy's broadcasting
     c = db1['min_bp'].to_numpy()[:, None]
     d = db1['max_bp'].to_numpy()[:, None]
-    result = ((c1 == c2) & (a >= c) & (a <= d)) | ((c1 == c2) & (b >= c) & (b <= d))
+    result = ((c1 == c2) & (a >= c) & (a <= d)) | ((c1 == c2) & (b >= c) & (b <= d)) | ((c1 == c2) & (a <= c) & (b >= d))
     nv1['Novel_in_Database'] = np.where(result.any(axis=0), 'No', 'Yes')
     nv1[f'Novel_in_{trait1}']=np.where(((nv1.Novel_in_GWAScatalog=="Yes") & (nv1.Novel_in_Database=='Yes')),'Yes','No')
     nv1=nv1.drop(['Novel_in_GWAScatalog', 'Novel_in_Database'], axis = 1)
