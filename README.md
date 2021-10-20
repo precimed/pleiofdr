@@ -126,6 +126,7 @@ and prepare input files for cond/conj fdr analysis (mat):
   Edit ``config.txt`` so that 
   * ``reffile`` points to the ``ref9545380_1kgPhase3eur_LDr2p1.mat`` file
   * ``traitfolder`` points to folder containing ``CTG_COG_2018.mat`` and ``SSGAC_EDU_2016.mat``
+  * set ``randprune_n=500`` instead of the default ``randprune_n=20``
   You may also want to change ``traitfile1`` and ``traitfiles`` options.
   
   Start matlab.
