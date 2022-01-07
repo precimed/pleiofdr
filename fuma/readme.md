@@ -23,3 +23,4 @@ The arguments are: 1. conj.0.05_clump.snps.csv, 2. respective FUMA snps.tx, 3. s
 4. std sumstats for TRAIT2, 5. TRAIT1 name, 6. TRAIT2 name
 ##### Example:
 Rscript ../conj_fuma_combined_snps.R ../fuma_input/conj.md_crp.snps.csv ../fuma_output_fin1/FUMA_conj_md_crp_lead_job1399/snps.txt ../sumstat-std/PGC_MD_2018_with23andMe_noUKBB.sumstats.gz ../sumstat-std/CHARGE_CRP_2018.sumstats.gz DEP CRP
+##### 5. csv_to_excel.
