@@ -38,7 +38,7 @@ classdef pleioOpt
         stattype = 'condfdr'; 
         fdrthresh = 0.05; pthresh = 5e-8; exclude_from_fit = {}; 
         mafthresh = 0.005;
-        t1_low = 0; t1_up = 10; t1_nbreaks = 1001;
+        t1_low = 0; t1_up = 30; t1_nbreaks = 3001;
         t2_low = 0; t2_up = 3;  t2_nbreaks = 31;
         qq_low = 0; qq_up = 3; qq_nbreaks = 4;
         onscreen = false;
