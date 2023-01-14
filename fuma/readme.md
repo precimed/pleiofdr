@@ -21,7 +21,7 @@ Rscript ../conj_fuma_combined_snps.R ../fuma_input/conj.md_crp.snps.csv ../fuma_
 
 #### 4. conj_fuma_combined_novelty.py
 This scripts will take 7 arguments to create conjFDR_0.05_TRAIT1_vs_TRAIT2_novelty.csv file.  
-The arguments are : 1. conjFDR_0.05_TRAIT1_vs_TRAIT2.csv (created by conj_fuma_combined_lead.R), 2. gwascatalog.txt from respective FUMA out, 3. conjFDR_0.05_TRAIT1_vs_TRAIT2.csv (created by conj_fuma_combined_snps.R) 4. Inhouse Novelty db 5. String to search in gwascatalog; i.e. "Depress" 6. TRAIT1 name & 7. TRAIT2 name
+The arguments are : 1. conjFDR_0.05_TRAIT1_vs_TRAIT2.csv (created by conj_fuma_combined_lead.R), 2. gwascatalog.txt from respective FUMA out, 3. conjFDR_0.05_TRAIT1_vs_TRAIT2.csv (created by conj_fuma_combined_snps.R) 4. Inhouse Novelty db 5. String to search in gwascatalog; i.e. "Depress" 6. TRAIT1 name & 7. TRAIT2 name.
 The Inhouse Novelty is the delimited csv file created based on the corresponding data in "https://drive.google.com/drive/folders/1eagc2z3RdYgIgyudc5u6ru_lN5MScaC_?usp=sharing". For example for depression, copy range A22:H1103 to a new excel file. Save the excel file as txt delimited and then replace .txt with .csv. 
 ##### Example:
 python conj_fuma_combined_novelty.py conjFDR_0.05_DEP_vs_BMI.csv ../fuma_output_fin1/FUMA_conj_md_bmi_lead_job1399/gwascatalog.txt conjFDR_0.05_DEP_vs_BMI_SNPs.csv novelty_db_dep.csv Depress DEP BMI
