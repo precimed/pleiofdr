@@ -21,7 +21,8 @@ def novelty_check(lead,gwas,snp,db,nov,trait1,trait2):
     #trait2=sys.argv[7]
     #lead,gwas,snp,db,nov,trait1,trait2=nv1,gw1,snp1,db1,nov1,traits1,trait2
     gw2=gw1[gw1['Trait'].str.contains(fr'{nov}(?!$)')]
-    snp1['Novel_in_GWAScatalog'] = snp1.groupby('locusnum')['CAND_SNP'].apply(lambda s: s.isin(gw2['snp']))
+    new_col=snp1.groupby('locusnum')['CAND_SNP'].apply(lambda s: s.isin(gw2['snp']))
+    snp1['Novel_in_GWAScatalog'] = new_col.reset_index(level=0, drop=True)
     nv1=nv1.merge(snp1.groupby('locusnum')['Novel_in_GWAScatalog'].any(), left_on='locusnum', right_index=True, how='left')
     nv1.Novel_in_GWAScatalog=nv1.Novel_in_GWAScatalog.map({True: 'No', False: 'Yes'})
     nv1['MinBP']=nv1['MinBP'].astype(int)
