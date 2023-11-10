@@ -2,21 +2,22 @@ print('This script would take 6 arguments, which are:')
 print('Conditional clump 0.01 lead csv, respective FUMA snps.tx, std sumstats for TRAIT1')
 print('std sumstats for TRAIT2, TRAIT1 name, TRAIT2 name')
 print('to produce cond_0.01_TRAIT1_vs_TRAIT2.csv')
+library(data.table)
 args <- commandArgs(TRUE)
 #lead1=read.csv('fdr_out5/SCZ_BMI_condfdr/cond.result.clump_0.01.lead.csv',sep = '\t')
-lead1=read.csv(args[1],sep = '\t',stringsAsFactors=FALSE)
+lead1=fread(args[1],sep = '\t',stringsAsFactors=F,data.table=F)
 lead2=subset(lead1, is_locus_lead == "True")
 lead3=lead2[order(lead2$locusnum, lead2$FDR),]
 lead4 = lead3[!duplicated(lead3$locusnum),]
 lead5=subset(lead4, select = -c(is_locus_lead) )
 #snp1=read.csv('fuma_result_fin1/FUMA_cond_scz_bmi_lead/snps.txt',sep = '\t')
-snp1=read.csv(args[2],sep = '\t',stringsAsFactors=FALSE)
+snp1=fread(args[2],sep = '\t',stringsAsFactors=F,data.table=F)
 leadsnp1=merge(lead5,snp1,by.x = 'LEAD_SNP',by.y = 'rsID')
 leadsnp2=leadsnp1[,c(2,3,1,4,5,6,7,12,11,18,19,20,21,22,23,24)]
 #sm1=read.table('sumstat-std/PGC_SCZ_0518_EUR.sumstats.gz',sep = '\t',header = T)
 #sm2=read.table('sumstat-std/GIANT_BMI_2018_UKB_v2.sumstats.gz',sep = '\t',header = T)
-sm1=read.table(args[3],sep = '\t',header = T,stringsAsFactors=FALSE)
-sm2=read.table(args[4],sep = '\t',header = T,stringsAsFactors=FALSE)
+sm1=fread(args[3],sep = '\t',header = T,stringsAsFactors=F,data.table=F)
+sm2=fread(args[4],sep = '\t',header = T,stringsAsFactors=F,data.table=F)
 trait1=args[5]
 trait2=args[6]
 #trait1='SCZ'
@@ -50,4 +51,4 @@ names(leadsnp2)[9]='A2'
 
 leadsnp3=subset(leadsnp2, FDR < 0.01)
 leadsnp4=leadsnp3[order(leadsnp3$locusnum),]
-write.csv(leadsnp4, file = paste0('condFDR_0.01_',trait1,'_vs_',trait2, ".csv"), sep='\t', row.names = FALSE)
+write.table(leadsnp4, file = paste0('condFDR_0.01_',trait1,'_vs_',trait2, ".csv"), sep='\t', row.names = F,quote=F)
