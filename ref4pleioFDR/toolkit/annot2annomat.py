@@ -23,8 +23,8 @@ if __name__ == "__main__":
     for t in df.itertuples():
         dd[t[4]].add(t[8]) # t[0] = index
 
-    template_snps = pd.read_csv(args.template_file,sep='\t',usecols=[3],
-                                header=None,names=["SNP"],squeeze=True)
+    template_snps = pd.read_csv(args.template_file, sep='\t', usecols=[3],
+                                header=None, names=["SNP"])["SNP"]
     # hardcoded list of categories supported by knownGene2annot.py
     l = ["100kDown", "10kDown", "1kDown", "100kUp", "10kUp", "1kUp", "3UTR",
         "5UTR", "Exon", "Intron", "ProteinCoding", "NoncodingTranscript",

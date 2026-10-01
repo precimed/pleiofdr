@@ -1,0 +1,11 @@
+# Allowlist: the repository root also holds multi-GB reference and trait data that must
+# never enter the build context.
+*
+!pyproject.toml
+!uv.lock
+!README.md
+!LICENSE
+!src/
+!config_default.txt
+!config_template.txt
+**/__pycache__

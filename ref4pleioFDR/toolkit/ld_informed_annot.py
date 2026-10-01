@@ -71,8 +71,7 @@ def main():
         # chr3.schork.r2.ld.gz
         f_name = os.path.join(chr_r2_file_dir, f"{chr_r2_prefix}{i}{chr_r2_suffix}")
         print("Reading %s" % f_name)
-        df = pd.read_table(f_name, usecols=["SNP_A", "SNP_B", "R2"],
-            delim_whitespace=True)
+        df = pd.read_table(f_name, usecols=["SNP_A", "SNP_B", "R2"], sep=r"\s+")
         for row in df.itertuples():
             i1 = snp_ind[row.SNP_A]
             i2 = snp_ind[row.SNP_B]
@@ -97,7 +96,7 @@ def main():
     out_df = pd.DataFrame(index=dfa.SNP, columns=annot2use, data=ld_annot_data)
     # add intergenic column properly based on auxiliary annotation columns from dfa
     intergenic = np.zeros(len(out_df))
-    i = (out_df.sum(1).values + dfa[auxiliary_annot].sum(1).values) == 0
+    i = (out_df.sum(axis=1).values + dfa[auxiliary_annot].sum(axis=1).values) == 0
     intergenic[i] = 1
     out_df["Intergenic"] = intergenic
 

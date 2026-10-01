@@ -49,9 +49,9 @@ refinfo=
 # ========= Other miscellaneous options (expert usage only) =========
 
 # Force random prune indices (pruneidx) to be re-generated for each run.
-# Setting this to false will preserve pruneidx across re-runs (unless you restart matlab or clear workspace).
-# Be careful with setting this to false.
-# Remember to clear matlab workspace whenever you change ldmatfile or randprune_n.
+# Each pleiofdr run starts fresh, so prune indices are only reused when given in randprune_file
+# (a .mat file with a boolean nsnp x randprune_n matrix); loading such a file turns this off.
+# Use `pleiofdr --seed N` to make randomly generated prune indices reproducible.
 reset_pruneidx=true
 
 # randprune_repeats allows to choose from three resampling options ('default', 'maxout', 'none')
@@ -100,5 +100,5 @@ onscreen = true
 # Setting `dummy_zscore = true` will force pleioFDR code to calcualte z-score from p-value (forcing them to be positive).
 dummy_zscore = false
 
-# A flag indicating whether to exit matlab upon completion of pleioFDR analysis.
+# Used by the MATLAB version (legacy_matlab/) only; ignored by pleiofdr.
 exit_matlab_upon_completion = false

@@ -7,7 +7,7 @@ df_annot_nss = pd.read_table(r'Pruefer2014_MM.txt', header=None, names=['CHR', '
 df_annot_brain = pd.read_csv(r'H:\Dropbox\analysis\2017_02_February_28_cognition_Neanderthal\3.14\hpabraingenes_noheader.txt', sep='\t')
 
 for chri in range(1, 23):
-    df = pd.read_csv(r'H:\NORSTORE\MMIL\SUMSTAT\LDSR\LDSR_Annot\1000G_Phase3_baselineLD_ldscores\baselineLD.{0}.annot.gz'.format(chri), delim_whitespace=True)
+    df = pd.read_csv(r'H:\NORSTORE\MMIL\SUMSTAT\LDSR\LDSR_Annot\1000G_Phase3_baselineLD_ldscores\baselineLD.{0}.annot.gz'.format(chri), sep=r'\s+')
     df = df[['CHR', 'BP', 'SNP', 'CM']].copy()
 
     t_nss = df_annot_nss[df_annot_nss['CHR'] == 'chr{}'.format(chri)]
@@ -43,10 +43,11 @@ import pandas as pd
 import numpy as np
 dir = r'H:\Dropbox\analysis\2018_01_15_NSS\*.partitioned.results'
 files = glob.glob(dir)
-df_total = None
+frames = []
 for fullfile in files:
     file = os.path.split(fullfile)[1]
-    df = pd.read_csv(fullfile, delim_whitespace=True)
+    df = pd.read_csv(fullfile, sep=r'\s+')
     df['file'] = file
-    df_total = (df if df_total is None else df_total.append(df))
+    frames.append(df)
+df_total = pd.concat(frames)
 df_total.to_csv(r'H:\Dropbox\analysis\2018_01_15_NSS\partitioned.results.csv', index=False, sep='\t')

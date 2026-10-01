@@ -34,7 +34,7 @@ snp_in_ld_r2 = defaultdict(list) #snp_i : [snp_r2_1, snp_r2_2, ...] - r2 of snps
 i=21
 f_name = os.path.join(chr_r2_file_dir, f"{chr_r2_prefix}{i}{chr_r2_suffix}") # "/home/weiqiuc/workspace2/testrun2/1000G/dataprocess/schork/chr21.schork.r2.ld.gz"
 #print("Reading %s" % f_name)
-df = pd.read_table(f_name, usecols=["SNP_A", "SNP_B", "R2"],delim_whitespace=True)
+df = pd.read_table(f_name, usecols=["SNP_A", "SNP_B", "R2"], sep=r"\s+")
 #   >>> df[1:3]
 #           SNP_A       SNP_B        R2
 #   1  rs71220884  rs71205710  0.568647
@@ -62,7 +62,7 @@ ld_annot_data[~i] = 1
 out_df = pd.DataFrame(index=dfa.SNP, columns=annot2use, data=ld_annot_data)
 # add intergenic column properly based on auxiliary annotation columns from dfa
 intergenic = np.zeros(len(out_df))
-i = (out_df.sum(1).values + dfa[auxiliary_annot].sum(1).values) == 0 # out_df.sum(1).values & dfa[auxiliary_annot].sum(1).values: located in functional categories
+i = (out_df.sum(axis=1).values + dfa[auxiliary_annot].sum(axis=1).values) == 0 # out_df.sum(1).values & dfa[auxiliary_annot].sum(1).values: located in functional categories
 intergenic[i] = 1 # define the mutation is intergenic if this mutation doesn't locate at any of the functional categories. 
 out_df["Intergenic"] = intergenic 
 
@@ -71,9 +71,4 @@ print(out_df.sum())
 
 print("Saving result to %s" % out_f_name)
 out_df.to_csv(out_f_name, sep='\t', compression='gzip')
-
-
-if __name__ == "__main__":
-    print("Start")
-    main()
-    print("Done")
+print("Done")

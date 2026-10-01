@@ -1,0 +1,7 @@
+snp	Trait
+rs47814888	Depressive symptoms
+rs71947091	Depression
+rs27842561	Height
+rs70027445	Major depressive disorder
+rs1	Depressed affect
+rs2	BMI

@@ -8,3 +8,31 @@
 *.pyc
 
 config.txt
+
+# Python virtual environments and tooling
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+
+# Misc
+.DS_Store
+
+# data files
+*.mat
+*.tar.gz
+*.tar.gz.1
+*.txt.gz
+*.ref
+
+# output files
+*.fig
+*.png
+*.svg
+*.csv
+*.log
+
+# build artifacts
+*.sif

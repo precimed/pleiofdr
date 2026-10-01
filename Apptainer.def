@@ -1,0 +1,78 @@
+# pleioFDR Apptainer image (x86_64). Build on a machine with network access:
+#   apptainer build pleiofdr.sif Apptainer.def      (or: apptainer build --fakeroot ...)
+# then copy pleiofdr.sif to the airgapped system. See `apptainer run-help pleiofdr.sif`.
+
+Bootstrap: docker
+# python:3.13-slim-bookworm (multi-arch index), the same pinned base as the Dockerfile.
+# Apptainer does not accept a tag together with a digest, so only the digest is given.
+From: python@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26
+
+%files
+    pyproject.toml /opt/pleiofdr/build/
+    uv.lock /opt/pleiofdr/build/
+    README.md /opt/pleiofdr/build/
+    LICENSE /opt/pleiofdr/build/
+    src /opt/pleiofdr/build/
+    config_default.txt /opt/pleiofdr/share/
+    config_template.txt /opt/pleiofdr/share/
+
+%post
+    set -eu
+    export UV_PROJECT_ENVIRONMENT=/opt/venv UV_PYTHON_DOWNLOADS=never \
+        UV_PYTHON=/usr/local/bin/python3.13 UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy \
+        UV_CACHE_DIR=/tmp/uv-cache
+    python -m pip install --no-cache-dir --root-user-action=ignore uv==0.12.18
+    cd /opt/pleiofdr/build
+    uv sync --locked --no-dev --no-editable
+    python -m pip uninstall -y --root-user-action=ignore uv
+    /opt/venv/bin/python -c "import pleiofdr.analysis, pleiofdr.fuma.combine, pleiofdr.fuma.novelty"
+    rm -rf /opt/pleiofdr/build /tmp/uv-cache /tmp/pleiofdr-* /root/.cache /root/.config
+
+%environment
+    export PATH=/opt/venv/bin:$PATH
+    export MPLBACKEND=Agg
+    export PYTHONNOUSERSITE=1
+    export PYTHONDONTWRITEBYTECODE=1
+    # numba/matplotlib cache folders are chosen at run time by pleiofdr (pleiofdr/_caches.py)
+
+%runscript
+    exec pleiofdr "$@"
+
+%test
+    set -e
+    pleiofdr --version
+    python -m pleiofdr.selftest
+
+%apprun fuma-combine
+    exec python -m pleiofdr.fuma.combine "$@"
+%apphelp fuma-combine
+    Combine pleioFDR clumping results with FUMA snps.txt and summary statistics.
+    apptainer run --app fuma-combine pleiofdr.sif {cond,conj-lead,conj-snps} ...
+
+%apprun fuma-novelty
+    exec python -m pleiofdr.fuma.novelty "$@"
+%apphelp fuma-novelty
+    Flag conjFDR loci that are novel for trait 1.
+    apptainer run --app fuma-novelty pleiofdr.sif LEAD GWASCATALOG SNPS DB PATTERN TRAIT1 TRAIT2
+
+%labels
+    org.opencontainers.image.title pleiofdr
+    org.opencontainers.image.source https://github.com/precimed/pleiofdr
+    org.opencontainers.image.licenses GPL-3.0-only
+    org.opencontainers.image.version 2.0.0
+
+%help
+    pleioFDR: pleiotropy-informed conditional and conjunctional false discovery rate.
+    The image contains everything needed to run offline; reference and trait data are
+    bind-mounted at run time, and paths in config.txt must be paths inside the container.
+
+    Get a config template:
+        apptainer exec pleiofdr.sif cp /opt/pleiofdr/share/config_default.txt config.txt
+    Run (with reffile=/ref/ref9545380_1kgPhase3eur_LDr2p1.mat in config.txt):
+        apptainer run --containall -B /path/to/refdata:/ref -B $PWD:/data --pwd /data \
+            pleiofdr.sif --config config.txt
+    FUMA helpers:
+        apptainer run --app fuma-combine pleiofdr.sif --help
+        apptainer run --app fuma-novelty pleiofdr.sif --help
+    Self-test on synthetic data (no data needed):
+        apptainer test pleiofdr.sif

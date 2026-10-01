@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pleiofdr"
+version = "2.0.0"
+description = "Pleiotropy-informed conditional and conjunctional false discovery rate"
+readme = "README.md"
+license = "GPL-3.0-only"
+requires-python = ">=3.13"
+authors = [{ name = "University of Oslo, NORMENT / precimed" }]
+dependencies = [
+    "numpy>=2.1",
+    "scipy>=1.14",
+    "pandas>=2.2",
+    "matplotlib>=3.9",
+    "h5py>=3.12",
+    "numba>=0.61",
+]
+
+[project.optional-dependencies]
+ref = ["intervaltree>=3.1"]
+
+[project.scripts]
+pleiofdr = "pleiofdr.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pleiofdr"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "NPY"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

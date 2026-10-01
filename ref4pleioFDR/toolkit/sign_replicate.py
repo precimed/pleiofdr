@@ -1,7 +1,7 @@
 import pandas as pd
 import scipy.io as sio
 import numpy as np
-from scipy.stats import binom_test
+from scipy.stats import binomtest
 
 # load reference
 ref = pd.read_csv('SUMSTAT/misc/9545380_ref/9545380.ref', sep='\t')
@@ -30,7 +30,7 @@ df_mig_scz['MIG_REP'] = np.sign(df_mig_scz['IHGC_MIG_2016_with23andMe'].values) 
 # count how many loci replicated, and compute en-masse replication p-value
 yes = np.sum(df_mig_scz['SCZ_REP'].values & df_mig_scz['MIG_REP'].values)
 tot = np.sum(np.isfinite(df_mig_scz['PGC_SCZ_2021_noCLOZUKorPGC2'].values) & np.isfinite(df_mig_scz[mig_rep].values))
-pval=binom_test(x=tot-yes, n=tot, alternative='less')
+pval = binomtest(k=int(tot - yes), n=int(tot), alternative='less').pvalue
 print('{} of {} replicate, p-val {}'.format(yes, tot, pval))
 
 # save .csv file

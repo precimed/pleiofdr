@@ -1,0 +1,63 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DEMO_DATA_URL: https://precimed.s3-eu-west-1.amazonaws.com/pleiofdr/pleioFDR_demo_data.tar.gz
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: "3.14"
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run ruff check src tests
+      - run: uv run ruff format --check src tests
+
+  test:
+    name: test (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+      - run: uv sync --locked --python ${{ matrix.python }}
+
+      - name: Cache demo data
+        id: demo-cache
+        uses: actions/cache@v6
+        with:
+          path: pleioFDR_demo_data.tar.gz
+          key: pleioFDR-demo-data-v1
+      - name: Download demo data
+        if: steps.demo-cache.outputs.cache-hit != 'true'
+        run: curl -fsSL --retry 3 -o pleioFDR_demo_data.tar.gz "$DEMO_DATA_URL"
+      - name: Unpack demo data
+        run: tar -xzf pleioFDR_demo_data.tar.gz
+
+      - name: Run tests
+        env:
+          PLEIOFDR_REQUIRE_DEMO: "1"
+          MPLBACKEND: Agg
+        run: uv run pytest -ra
