@@ -10,6 +10,7 @@
 - [Data downloads](#data-downloads)
 - [Data preparation](#data-preparation)
 - [Run pleioFDR](#run-pleiofdr)
+  - [Running w. Slurm on HPC (TSD)](#running-w-slurm-on-hpc-tsd)
 - [Configuration reference](#configuration-reference)
 - [pleioFDR results](#pleiofdr-results)
 - [FUMA-defined loci](#fuma-defined-loci)
@@ -256,6 +257,61 @@ and prepare input files for cond/conj fdr analysis (mat):
 
   To run many trait pairs, see ``run_batch.py`` (fills ``config_template.txt`` for each pair) and
   ``MultipleRunUtility.sh``.
+
+### Running w. Slurm on HPC (TSD)
+
+On HPC systems with Slurm (e.g., TSD at University of Oslo), you can run pleioFDR in a batch job. For example, create a file ``pleiofdr.sh`` with the following header:
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=pleiofdr
+#SBATCH --output=pleiofdr.out
+#SBATCH --error=pleiofdr.err
+#SBATCH --open-mode=truncate
+#SBATCH --account=<account_name>
+#SBATCH --time=01:00:00
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=32G
+```
+
+Then, for invocation with Apptainer (make sure `apptainer` exist in `$PATH`), add the following lines to the script:
+
+```bash
+module purge
+
+export SIF=<path_to>/pleiofdr-2.0.0.sif
+export MYCONFIG=<path_to>/config.txt
+export APPTAINERENV_HDF5_USE_FILE_LOCKING=FALSE  # needed on TSD
+apptainer run --cleanenv \
+  -B /ess:/ess -B /cluster:/cluster \
+  -B $PWD:/data --pwd /data \
+  $SIF --config $MYCONFIG
+```
+
+Then, the job can be submitted with `sbatch pleiofdr.sh`. The output and error will be written to `pleiofdr.out` and `pleiofdr.err`, respectively.
+Output files will be written to the folder specified in the config file.
+
+Similarly, the .venv virtual environment can be used in a Slurm job script, by activating it before running pleioFDR.
+First make sure that the virtual environment is created locally and activated in the current shell. 
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install <path_to>/pleiofdr/.[ref]
+```
+
+Then, include in the Slurm job script:
+
+```bash
+module purge
+module load Python/3.13.5-GCCcore-14.3.0
+
+export MYCONFIG=<path_to>/config.txt
+export HDF5_USE_FILE_LOCKING=FALSE  # needed on TSD
+
+source .venv/bin/activate
+pleiofdr --config $MYCONFIG
+```
 
 ## Configuration reference
 
